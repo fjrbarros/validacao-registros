@@ -24,6 +24,8 @@ export async function validaRegistro(registro, token, setDadosTabela, values) {
             toast.error('Erro ao recuperar Token de acesso!', { position: toast.POSITION.TOP_RIGHT, autoClose: false });
             return true;
         case 404:
+            setDadosTabela(prevState => ([...prevState, { id: prevState.length + 1, registro: '', nome: '', situacao: `Registro <${registro}> inexistente!` }]));
+            return false;
         case 400:
             const resp = await response.json();
             setDadosTabela(prevState => ([...prevState, { id: prevState.length + 1, registro: '', nome: '', situacao: resp.mensagem }]));
