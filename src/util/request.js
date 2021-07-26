@@ -14,6 +14,8 @@ export async function validaRegistro(registro, token, setDadosTabela, values) {
 
     const response = await fetch(`https://gateway.apiserpro.serpro.gov.br/${url}${registro}`, options);
 
+    let resp;
+
     switch (response.status) {
         case 401:
             const token = await recuperaToken(values);
@@ -27,8 +29,12 @@ export async function validaRegistro(registro, token, setDadosTabela, values) {
             setDadosTabela(prevState => ([...prevState, { id: prevState.length + 1, registro: '', nome: '', situacao: `Registro <${registro}> inexistente!` }]));
             return false;
         case 400:
-            const resp = await response.json();
+            resp = await response.json();
             setDadosTabela(prevState => ([...prevState, { id: prevState.length + 1, registro: '', nome: '', situacao: resp.mensagem }]));
+            return false;
+        case 422:
+            resp = await response.json();
+            setDadosTabela(prevState => ([...prevState, { id: prevState.length + 1, registro: '', nome: '', situacao: `Dados de menor de idade bloqueados: ${registro}` }]));
             return false;
         case 403:
         case 500:
