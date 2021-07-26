@@ -16,7 +16,7 @@ export async function validaRegistro(registro, token, setDadosTabela, values) {
 
     switch (response.status) {
         case 401:
-            const token = await recuperaToken();
+            const token = await recuperaToken(values);
             if (token) {
                 await validaRegistro(registro, token);
                 return false;
