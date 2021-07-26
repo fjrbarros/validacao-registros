@@ -30,7 +30,9 @@ export async function validaRegistro(registro, token, setDadosTabela, values) {
             return false;
         case 400:
             resp = await response.json();
-            setDadosTabela(prevState => ([...prevState, { id: prevState.length + 1, registro: '', nome: '', situacao: resp.mensagem }]));
+            setDadosTabela(prevState => ([...prevState, { id: prevState.length + 1, registro: '', nome: '', situacao: values.tipoInscricao === 'CPF' ? resp.mensagem : resp.message
+
+        }]));
             return false;
         case 422:
             resp = await response.json();
